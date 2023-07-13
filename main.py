@@ -60,7 +60,9 @@ class Field:
     def __init__(self, gui: GUI, data: list[Layer]):
         self.gui = gui
         self.data = data
-        self.blocks: list[list[Block]] = []
+
+    def create_upper_layer(self):
+        pass
 
 
 g = GUI()
