@@ -1,12 +1,13 @@
 from tkinter import *
 import time
+import json
 
 
 class GUI():
     def __init__(self):
         self.root = Tk()
         self.root.geometry('1280x720')
-        # self.root.resizable(False, False)
+        self.root.resizable(False, False)
 
         self.canvas = Canvas(self.root, width=768, height=640, bg='red')
         self.canvas.place(x=472, y=40)
@@ -17,6 +18,11 @@ class GUI():
         self.run_code_button = Button(
             self.root, text='Run Code', width=23, height=4,)
         self.run_code_button.place(x=40, y=635)
+
+        self.field = Field(self)
+
+    def mainloop(self):
+        self.root.mainloop()
 
 
 class Coords:
@@ -51,22 +57,36 @@ class Block(Sprite):
         super().__init__(col, row, image, gui)
 
 
-class Layer():
-    def __init__(self, map: list[list[Block]]):
-        self.map = map
-
-
-class Field:
-    def __init__(self, gui: GUI, data: list[Layer]):
+class LowerLayer():
+    def __init__(self, gui: GUI):
+        # Вскрываем файл map.txt -> и создаем объекты на canvas
         self.gui = gui
-        self.data = data
-
-    def create_upper_layer(self):
+        self.id = self.gui.canvas.create_rectangle(
+            20, 20, 200, 200, fill='blue')
         pass
 
 
-g = GUI()
-b0 = Block(0, 0, image='textures/al1.png', gui=g)
+class UpperLayer():
+    def __init__(self, gui: GUI):
+        # Вскрываем файл map.txt -> и создаем объекты на canvas
+        self.gui = gui
+        self.id = self.gui.canvas.create_rectangle(
+            50, 50, 250, 250, fill='green')
+        pass
+
+
+class Field:
+    def __init__(self, gui: GUI):
+        self.gui = gui
+        self.data = []
+
+        self.data.append(LowerLayer(self.gui))
+        self.data.append(UpperLayer(self.gui))
+
+
+app = GUI()
+app.mainloop()
+'''b0 = Block(0, 0, image='textures/al1.png', gui=g)
 b1 = Block(0, 1, image='textures/al1.png', gui=g)
 b2 = Block(0, 2, image='textures/al1.png', gui=g)
 b3 = Block(1, 0, image='textures/al1.png', gui=g)
@@ -78,5 +98,4 @@ b8 = Block(2, 2, image='textures/al1.png', gui=g)
 l1 = Layer(map=[[b0, b1, b2],
                 [b3, b4, b5],
                 [b6, b7, b8],])
-
-g.root.mainloop()
+'''
