@@ -1,7 +1,7 @@
 from tkinter import *
 import time
 import json
-
+import properties as pr
 
 class GUI():
     def __init__(self):
@@ -61,17 +61,22 @@ class LowerLayer():
     def __init__(self, gui: GUI):
         # Вскрываем файл map.txt -> и создаем объекты на canvas
         self.gui = gui
-        self.id = self.gui.canvas.create_rectangle(
-            20, 20, 200, 200, fill='blue')
-        pass
+        self.read_map()
+
+    def read_map(self):
+        with open('map.txt', 'r') as file:
+            content = file.read()
+        
+        data = json.loads(content)
+        for el in data:
+            obj = el.get("object")
+            Block(col=el.get("col"), row=el.get("row"), image= pr.base_url + pr.textures.get(obj).get("name"), gui=self.gui)
 
 
 class UpperLayer():
     def __init__(self, gui: GUI):
         # Вскрываем файл map.txt -> и создаем объекты на canvas
         self.gui = gui
-        self.id = self.gui.canvas.create_rectangle(
-            50, 50, 250, 250, fill='green')
         pass
 
 
